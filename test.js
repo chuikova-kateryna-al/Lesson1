@@ -4,7 +4,6 @@ function checkProbabilityTheory(count){
         var evennum = 0;
         var oddnum = 0;
         
- 
     for (i = 1; i <= count; i++ ){
 
         var num = Math.random()*901+100;
@@ -18,7 +17,7 @@ function checkProbabilityTheory(count){
         
        var oddnum = oddnum + 1; 
     }
-    
+
     }
 
     var perc = (evennum/oddnum)*100;
