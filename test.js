@@ -12,7 +12,6 @@ function price (){
         var sliceTo = services[key].indexOf(" ");
         var oneServicePrice = Number(services[key].slice(0, sliceTo))
         var totalPrice = totalPrice + oneServicePrice
-       
     }
     console.log(totalPrice + ' грн')
 }
@@ -25,7 +24,6 @@ function minPrice (){
         var sliceTo = services[key].indexOf(" ");
         var oneServicePrice = Number(services[key].slice(0, sliceTo));
         priceRange.push(oneServicePrice)
-       
     }
 
     console.log(Math.min.apply(Math, priceRange) + ' грн')
@@ -40,18 +38,14 @@ function maxPrice (){
     for (let key in services){
         var sliceTo = services[key].indexOf(" ");
         var oneServicePrice = Number(services[key].slice(0, sliceTo));
-        priceRange.push(oneServicePrice)
-       
+        priceRange.push(oneServicePrice)      
     }
 
     console.log(Math.max.apply(Math, priceRange) + ' грн')
-    
-    
+   
 }
 
 services.збитки = "200 грн";
-
-
 
 price();
 minPrice();
