@@ -26,8 +26,7 @@ function minPrice (){
         priceRange.push(oneServicePrice)
     }
 
-    console.log(Math.min.apply(Math, priceRange) + ' грн')
-    
+    console.log(Math.min.apply(Math, priceRange) + ' грн')  
     
 }
 
