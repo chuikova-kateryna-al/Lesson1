@@ -1,20 +1,58 @@
-var hogwartsStudentProfile = {
-    name: "Draco",
-    surname: "Malfoy",
-    age: "15",
-    dateOfBith: "June 5, 1980",
-    house: "Slytherin",
-    bloodStatus: "Pureblood",
-    wand: "hawthorn wood with a unicorn hair core"
-}
+var services = {
+    "стрижка": "60 грн",
+    "гоління": "80 грн",
+    "Миття голови": "100 грн"
+    };
 
-function getStudentProfile (){
-    for (let key in hogwartsStudentProfile){
-        console.log(key + ': ' + hogwartsStudentProfile[key])
+function price (){
+
+    var totalPrice = 0;
+    
+    for (let key in services){
+        var sliceTo = services[key].indexOf(" ");
+        var oneServicePrice = Number(services[key].slice(0, sliceTo))
+        var totalPrice = totalPrice + oneServicePrice
+       
     }
+    console.log(totalPrice + ' грн')
 }
 
-hogwartsStudentProfile.patronus = " cannot cast";
+function minPrice (){
+
+    var priceRange = [];
+    
+    for (let key in services){
+        var sliceTo = services[key].indexOf(" ");
+        var oneServicePrice = Number(services[key].slice(0, sliceTo));
+        priceRange.push(oneServicePrice)
+       
+    }
+
+    console.log(Math.min.apply(Math, priceRange) + ' грн')
+    
+    
+}
+
+function maxPrice (){
+
+    var priceRange = [];
+    
+    for (let key in services){
+        var sliceTo = services[key].indexOf(" ");
+        var oneServicePrice = Number(services[key].slice(0, sliceTo));
+        priceRange.push(oneServicePrice)
+       
+    }
+
+    console.log(Math.max.apply(Math, priceRange) + ' грн')
+    
+    
+}
+
+services.збитки = "200 грн";
 
 
-getStudentProfile();
+
+price();
+minPrice();
+maxPrice()
