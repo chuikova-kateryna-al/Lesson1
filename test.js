@@ -1,51 +1,83 @@
-var services = {
-    "стрижка": "60 грн",
-    "гоління": "80 грн",
-    "Миття голови": "100 грн"
-    };
+const company = {
+    name: 'Велика Компанія',
+    type: 'Головна компанія',
+    platform: 'Платформа для продажу квитків',
+    sellsSolution: 'Рішення для продажу квитків',
+    clients: [
+        {
+            name: 'Клієнт 1',
+            type: 'subCompany',
+            uses: 'ПО для продажу квитків',
+            sells: 'Рішення для продажу квитків',
+            partners: [
+                {
+                    name: 'Клієнт 1.1',
+                    type: 'subSubCompany',
+                    uses: 'Рішення для продажу квитків',
+                    sells: 'Рішення для продажу квитків',
+                },
+                {
+                    name: 'Клієнт 1.2',
+                    type: 'subSubCompany',
+                    uses: 'Рішення для продажу квитків',
+                    sells: 'Рішення для продажу квитків',
+                    partners: [
+                        {
+                            name: 'Клієнт 1.2.3',
+                            type: 'subSubCompany',
+                            uses: 'Рішення для продажу квитків',
+                            sells: 'Рішення для продажу квитків',
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            name: 'Клієнт 2',
+            type: 'subCompany',
+            uses: 'ПО для продажу квитків',
+            sells: 'Рішення для продажу квитків'
+        }
+    ]
+};
 
-function price (){
 
-    var totalPrice = 0;
-    
-    for (let key in services){
-        var sliceTo = services[key].indexOf(" ");
-        var oneServicePrice = Number(services[key].slice(0, sliceTo))
-        var totalPrice = totalPrice + oneServicePrice
+function getCompany(compName) {
+
+    if (company.name === compName) {
+        console.log(company);
+    } else {
+        if (company.clients) {
+            for (const client of company.clients) {
+                if (compName === client.name) {
+                    console.log(client);
+                } else {
+                    if (client.partners) {
+                        for (const partner of client.partners) {
+                            if (compName === partner.name) {
+                                console.log(partner);
+                            } else {
+                                if (partner.partners) {
+                                    for (const enyth of partner.partners) {
+                                        if (compName === enyth.name)
+                                            console.log(partner.partners)
+                                    }
+
+                                }
+
+                            }
+                        }
+
+                    }
+
+                }
+
+            }
+        }
     }
-    console.log(totalPrice + ' грн')
+    return;
 }
 
-function minPrice (){
 
-    var priceRange = [];
-    
-    for (let key in services){
-        var sliceTo = services[key].indexOf(" ");
-        var oneServicePrice = Number(services[key].slice(0, sliceTo));
-        priceRange.push(oneServicePrice)
-    }
 
-    console.log(Math.min.apply(Math, priceRange) + ' грн')  
-    
-}
-
-function maxPrice (){
-
-    var priceRange = [];
-    
-    for (let key in services){
-        var sliceTo = services[key].indexOf(" ");
-        var oneServicePrice = Number(services[key].slice(0, sliceTo));
-        priceRange.push(oneServicePrice)      
-    }
-
-    console.log(Math.max.apply(Math, priceRange) + ' грн')
-   
-}
-
-services.збитки = "200 грн";
-
-price();
-minPrice();
-maxPrice()
+console.log(getCompany('Клієнт 1.2.3'));
