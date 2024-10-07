@@ -61,8 +61,10 @@ function getCompany(compName) {
                                     for (const enyth of partner.partners) {
                                         if (compName === enyth.name)
                                             result = console.log(partner.partners)
-                                    }
+                                    } 
 
+                                } else {
+                                    result = console.log ('No Company Found')
                                 }
 
                             }
