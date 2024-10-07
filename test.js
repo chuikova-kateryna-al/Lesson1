@@ -45,22 +45,22 @@ const company = {
 function getCompany(compName) {
 
     if (company.name === compName) {
-        console.log(company);
+        result= console.log(company);
     } else {
         if (company.clients) {
             for (const client of company.clients) {
                 if (compName === client.name) {
-                    console.log(client);
+                    result = console.log(client);
                 } else {
                     if (client.partners) {
                         for (const partner of client.partners) {
                             if (compName === partner.name) {
-                                console.log(partner);
+                                result = console.log(partner);
                             } else {
                                 if (partner.partners) {
                                     for (const enyth of partner.partners) {
                                         if (compName === enyth.name)
-                                            console.log(partner.partners)
+                                            result = console.log(partner.partners)
                                     }
 
                                 }
@@ -75,9 +75,9 @@ function getCompany(compName) {
             }
         }
     }
-    return;
+    return result;
 }
 
 
 
-console.log(getCompany('Клієнт 1.2.3'));
+getCompany('Клієнт 1.2.3')
