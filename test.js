@@ -14,6 +14,7 @@ var arr = [
         lastName:"",
         email:"andrii@mail.ru"
     },
+
 ]
 
 function validEmailsArray(arr){
