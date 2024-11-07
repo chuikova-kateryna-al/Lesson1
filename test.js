@@ -36,4 +36,3 @@ for (const [key, value] of Object.entries(arr[i])){
     return res;
 }
 (validEmailsArray(arr));
-
