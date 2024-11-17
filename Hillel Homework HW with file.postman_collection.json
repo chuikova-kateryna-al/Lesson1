@@ -1,0 +1,942 @@
+{
+	"info": {
+		"_postman_id": "1d3b2980-651f-4923-a450-94726ce67ab2",
+		"name": "Hillel Homework HW with file",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39400550"
+	},
+	"item": [
+		{
+			"name": "Check user creation",
+			"item": [
+				{
+					"name": "Check Account creation with invalid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"\r",
+									"\r",
+									"var invalidSchema = {\r",
+									"  \"type\": \"object\",\r",
+									"  \"properties\": {\r",
+									"    \"status\": {\r",
+									"      \"type\": \"string\"\r",
+									"    },\r",
+									"    \"message\": {\r",
+									"      \"type\": \"string\"\r",
+									"    }\r",
+									"  },\r",
+									"  \"required\": [\r",
+									"    \"status\",\r",
+									"    \"message\"\r",
+									"  ]\r",
+									"}\r",
+									"\r",
+									"    pm.test(\"Status code is 400\", function () {\r",
+									"        pm.response.to.have.status(400);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Status is error\", function () {\r",
+									"        pm.expect(jsonData.status).to.eql(\"error\");\r",
+									"    });\r",
+									"\r",
+									"    pm.test('Schema is valid on failed account creation', function () {\r",
+									"        pm.expect(tv4.validate(pm.response.json(), invalidSchema)).to.be.true;\r",
+									"    });\r",
+									"\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"lastName\": \"{{lastname}}\",\r\n    \"email\": \"{{email}}\",\r\n    \"password\": \"{{password}}\",\r\n    \"repeatPassword\": \"{{passwordConformation}}\"\r\n    \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/signup",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Create New User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var firstn = pm.variables.replaceIn('{{$randomFirstName}}');",
+									"pm.collectionVariables.set(\"userFirstName\", firstn)",
+									"",
+									"var lastn = pm.variables.replaceIn('{{$randomLastName}}');",
+									"pm.collectionVariables.set(\"userLastName\", lastn)",
+									"",
+									"var pw = pm.variables.replaceIn('{{$randomPassword}}');",
+									"pm.collectionVariables.set(\"userPassword\", pw )",
+									"",
+									"var em = pm.variables.replaceIn('{{$randomEmail}}');",
+									"pm.collectionVariables.set(\"userEmail\", em )"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();",
+									"var id = jsonData.data.userId;",
+									"",
+									"",
+									"pm.collectionVariables.set(\"creationUserID\", id)",
+									"var schemaJson = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"status\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"data\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"userId\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"photoFilename\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"distanceUnits\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"currency\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"userId\",",
+									"        \"photoFilename\",",
+									"        \"distanceUnits\",",
+									"        \"currency\"",
+									"      ]",
+									"    }",
+									"  },",
+									"  \"required\": [",
+									"    \"status\",",
+									"    \"data\"",
+									"  ]",
+									"}",
+									"",
+									"    pm.test(\"Status code is 201\", function () {",
+									"        pm.response.to.have.status(201);",
+									"    });",
+									"",
+									"    pm.test('Schema is valid on successfull account creation', function () {",
+									"        pm.expect(tv4.validate(pm.response.json(), schemaJson)).to.be.true;",
+									"    });",
+									"",
+									"    const jsonDataReq = JSON.parse(pm.request.body);",
+									"",
+									"    pm.test(\"Email is valid\", function () {",
+									"        pm.expect(jsonDataReq.email).to.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$/gm);",
+									"    });",
+									"",
+									"   "
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"{{$randomFirstName}}\",\n    \"lastName\": \"{{$randomLastName}}\",\n    \"email\": \"{{userEmail}}\",\n    \"password\": \"{{userPassword}}\",\n    \"repeatPassword\": \"{{userPassword}}\"\n    \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/signup",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Update User Profile",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"//data sent",
+									"var jsonDataReq = JSON.parse(pm.request.body);",
+									"var sentName = jsonDataReq.name;",
+									"var sentlastName = jsonDataReq.lastName;",
+									"var sentCountry = jsonDataReq.country;",
+									"var sentDateBirth = jsonDataReq.dateBirth;",
+									"",
+									"//data received",
+									"var jsonDataRes = pm.response.json();",
+									"var receivedName = jsonDataRes.data.name;",
+									"var receivedLastName = jsonDataRes.data.lastName;",
+									"var receivedCountry = jsonDataRes.data.country;",
+									"var receivedDateRirth = jsonDataRes.data.dateBirth;",
+									"",
+									"pm.test(\"Name sent and Name received equals\", function () {",
+									"    pm.expect(sentName).to.eql(receivedName);",
+									"});",
+									"",
+									"pm.test(\"Last Name sent and Last Name received equals\", function () {",
+									"    pm.expect(sentlastName).to.eql(receivedLastName);",
+									"});",
+									"",
+									"pm.test(\"Country sent and Country received equals\", function () {",
+									"    pm.expect(sentCountry).to.eql(receivedCountry);",
+									"});",
+									"",
+									"pm.test(\"Received Birth Date is valid\", function () {",
+									"    pm.expect(receivedDateRirth).to.match(/^\\d{4}-\\d\\d-\\d\\dT\\d\\d:\\d\\d:\\d\\d(\\.\\d+)?(([+-]\\d\\d:\\d\\d)|Z)?$/);",
+									"});",
+									"",
+									"pm.test(\"Birth date sent and Birth date received equals\", function () {",
+									"    pm.expect(new Date(sentDateBirth).toISOString()).to.eql(receivedDateRirth);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"photo\": \"{{$randomFileName}}\",\n  \"name\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"dateBirth\": \"{{$randomDatePast}}\",\n  \"country\": \"{{$randomCountry}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/profile",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check user id upon creation matches user id upon password update",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"var newPW = pm.variables.replaceIn('{{$randomPassword}}')",
+									"pm.collectionVariables.set('newUserPassword', newPW)",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonDataRes = pm.response.json();",
+									"var userId = jsonDataRes.data.userId;",
+									"var createdID = pm.collectionVariables.get('creationUserID');",
+									"/*console.log(jsonDataRes)",
+									"console.log(\"user id\", userId)",
+									"console.log(createdID)*/",
+									"",
+									"",
+									"pm.test(\"User id upon creation matches user id upon password update\", function () {",
+									"    pm.expect(userId).to.eql(createdID);",
+									"});",
+									"",
+									"pm.execution.setNextRequest(\"Check Update User Profile with empty body\")",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"oldPassword\": \"{{userPassword}}\",\n  \"password\": \"{{newUserPassword}}\",\n  \"repeatPassword\": \"{{newUserPassword}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/password",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Logout",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status is not error\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData.status).to.eql(\"ok\");",
+									"});",
+									"",
+									"",
+									"pm.execution.setNextRequest(\"Check Update User Profile when signed out\")",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"packages": {},
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URL}}/auth/logout",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check User Signin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responceJSON = pm.response.json();",
+									"console.log(responceJSON);",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Photo is .png\", function () {",
+									"    pm.expect(responceJSON.data.photoFilename).to.contain(\".png\");",
+									"});",
+									"",
+									"pm.test(\"Distance is km or miles\", function () {",
+									"    pm.expect(responceJSON.data.distanceUnits).to.eql(\"km\",\"m\");",
+									"});",
+									"",
+									"pm.test(\"Currency is US dollar\", function () {",
+									"    pm.expect(responceJSON.data.currency).to.eql(\"usd\");",
+									"});",
+									"",
+									"pm.execution.setNextRequest(\"Check Create New Car\")",
+									"",
+									"",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"{{userEmail}}\",\n  \"password\": \"{{newUserPassword}}\",\n  \"remember\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/auth/signin",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"auth",
+								"signin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Create New Car",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var schema = {",
+									"  \"type\": \"object\",",
+									"  \"properties\": {",
+									"    \"status\": {",
+									"      \"type\": \"string\"",
+									"    },",
+									"    \"data\": {",
+									"      \"type\": \"object\",",
+									"      \"properties\": {",
+									"        \"id\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"carBrandId\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"carModelId\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"initialMileage\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"updatedMileageAt\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"carCreatedAt\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"mileage\": {",
+									"          \"type\": \"integer\"",
+									"        },",
+									"        \"brand\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"model\": {",
+									"          \"type\": \"string\"",
+									"        },",
+									"        \"logo\": {",
+									"          \"type\": \"string\"",
+									"        }",
+									"      },",
+									"      \"required\": [",
+									"        \"id\",",
+									"        \"carBrandId\",",
+									"        \"carModelId\",",
+									"        \"initialMileage\",",
+									"        \"updatedMileageAt\",",
+									"        \"carCreatedAt\",",
+									"        \"mileage\",",
+									"        \"brand\",",
+									"        \"model\",",
+									"        \"logo\"",
+									"      ]",
+									"    }",
+									"  },",
+									"  \"required\": [",
+									"    \"status\",",
+									"    \"data\"",
+									"  ]",
+									"}",
+									"",
+									"var carInfo = pm.response.json();",
+									"var id = carInfo.data.id;",
+									"pm.collectionVariables.set(\"carId\", id)",
+									"",
+									"var schema = {",
+									"    \"items\": {",
+									"        \"type\": \"boolean\"",
+									"    }",
+									"};",
+									"",
+									"var jsonDataReq = JSON.parse(pm.request.body);",
+									"var sentcarBrandId = jsonDataReq.carBrandId;",
+									"var sentcarModelId = jsonDataReq.carModelId;",
+									"var sentMileage = jsonDataReq.mileage;",
+									"",
+									"//data received",
+									"var jsonDataRes = pm.response.json();",
+									"var receivedBrandId = jsonDataRes.data.carBrandId;",
+									"var receivedcarModelId = jsonDataRes.data.carModelId;",
+									"var receivedMileage = jsonDataRes.data.mileage;",
+									"pm.collectionVariables.set(\"Mileage\", receivedMileage + 1)",
+									"",
+									"pm.test('Schema is valid', function () {",
+									"    pm.expect(tv4.validate(carInfo, schema)).to.be.true;",
+									"",
+									"});",
+									"",
+									"pm.test(\"Moled sent and Model received equals\", function () {",
+									"    pm.expect(sentcarModelId).to.eql(receivedcarModelId);",
+									"});",
+									"",
+									"pm.test(\"Brand sent and Brand received equals\", function () {",
+									"    pm.expect(sentcarBrandId).to.eql(receivedBrandId);",
+									"});",
+									"",
+									"pm.test(\"Mileage sent and Mileage received equals\", function () {",
+									"    pm.expect(sentMileage).to.eql(receivedMileage);",
+									"});",
+									"",
+									"pm.test(\"Logo is .png\", function () {",
+									"    pm.expect(jsonDataRes.data.logo).to.contain(\".png\");",
+									"});",
+									"",
+									"pm.execution.setNextRequest(\"Check Add Car Expenses\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"carBrandId\": 1,\n  \"carModelId\": 1,\n  \"mileage\": 122\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/cars",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"cars"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Add Car Expenses",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var responseJSON = pm.response.json();",
+									"",
+									"var newCost = Number(responseJSON.data.totalCost) + 1;",
+									"pm.collectionVariables.set(\"totalCost\", newCost)",
+									"",
+									"var newMilage = Number(responseJSON.data.mileage) + 1;",
+									"pm.collectionVariables.set(\"Mileage\", newMilage)",
+									"",
+									"var newLiters = Number(responseJSON.data.liters) + 1;",
+									"pm.collectionVariables.set(\"Liters\", newLiters)",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.execution.setNextRequest(\"Check Delete User\")"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"carId\": {{carId}},\n  \"reportedAt\": \"{{$isoTimestamp}}\",\n  \"mileage\": {{Mileage}},\n  \"liters\": {{Liters}},\n  \"totalCost\": {{totalCost}},\n  \"forceMileage\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/expenses",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"expenses"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Delete User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonDataRes = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Status OK\", function () {",
+									"    pm.expect(jsonDataRes.status).to.eql(\"ok\");",
+									"});",
+									"",
+									"pm.execution.setNextRequest(null)",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Update User Profile when signed out",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonDataRes = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 401\", function () {",
+									"    pm.response.to.have.status(401);",
+									"});",
+									"",
+									"pm.test(\"Status error\", function () {",
+									"    pm.expect(jsonDataRes.status).to.eql(\"error\");",
+									"});",
+									"",
+									"pm.test(\"Error message\", function () {",
+									"    pm.expect(jsonDataRes.message).to.eql(\"Not authenticated\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is utf-8\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\");",
+									"});",
+									"",
+									"pm.execution.setNextRequest(\"Check User Signin\")",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"try {",
+									"    const response = await pm.sendRequest({",
+									"        url: \"https://qauto2.forstudy.space/api/auth/logout\",",
+									"        method: \"GET\"",
+									"    });",
+									"",
+									"    console.log(response.json());",
+									"} catch (err) {",
+									"    console.error(err);",
+									"}"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"photo\": \"{{$randomFileName}}\",\n  \"name\": \"{{$randomFirstName}}\",\n  \"lastName\": \"{{$randomLastName}}\",\n  \"dateBirth\": \"{{$randomDatePast}}\",\n  \"country\": \"{{$randomCountry}}\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/profile",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Update User Profile with empty body",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonDataRes = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Status error\", function () {",
+									"    pm.expect(jsonDataRes.status).to.eql(\"error\");",
+									"});",
+									"",
+									"pm.test(\"Error message\", function () {",
+									"    pm.expect(jsonDataRes.message).to.eql(\"Empty body is not allowed\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is present\", function () {",
+									"    pm.response.to.have.header(\"Content-Type\");",
+									"});",
+									"",
+									"pm.test(\"Content-Type is utf-8\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.eql(\"application/json; charset=utf-8\");",
+									"});",
+									"",
+									"",
+									"pm.execution.setNextRequest(\"Check Logout\")",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{URL}}/users/profile",
+							"host": [
+								"{{URL}}"
+							],
+							"path": [
+								"users",
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "userEmail",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userPassword",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "userFirstName",
+			"value": ""
+		},
+		{
+			"key": "userLastName",
+			"value": ""
+		},
+		{
+			"key": "newUserPassword",
+			"value": ""
+		},
+		{
+			"key": "carId",
+			"value": ""
+		},
+		{
+			"key": "creationUserID",
+			"value": ""
+		},
+		{
+			"key": "totalCost",
+			"value": "1"
+		},
+		{
+			"key": "Mileage",
+			"value": "123"
+		},
+		{
+			"key": "Liters",
+			"value": "1"
+		}
+	]
+}

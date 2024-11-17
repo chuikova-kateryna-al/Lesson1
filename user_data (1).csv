@@ -1,0 +1,7 @@
+name,lastname,email,password,passwordConformation
+User,Test, ,random1*97Pass!,random1*97Pass!
+User,Test,test.com,random1*97Pass!,random1*97Pass!
+User,Test ,this_is@email,random1*97Pass!,random1*97Pass!
+User,Test ,@email.com,random1*97Pass!,random1*97Pass!
+User,Test ,test_user@mydomaiin.net,random1*97Pass!,random1*97Pass!
+user,Test,anyemail@something.net,random1*97Pass!,Doesnotmatch
